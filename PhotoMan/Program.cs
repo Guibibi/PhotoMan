@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity.UI;
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using PhotoMan.Areas.Identity;
 using PhotoMan.Data;
 

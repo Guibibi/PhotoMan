@@ -19,7 +19,7 @@ namespace PhotoMan.Models
         public DateTime Updated { get; set; } = DateTime.UtcNow;
 
          // Navigation properties
-        public required List<Collection>? Collections { get; set; }
+        public required List<PhotoCollection>? Collections { get; set; }
         public List<CollectionPurchase>? Purchases { get; set; }
        
         }   

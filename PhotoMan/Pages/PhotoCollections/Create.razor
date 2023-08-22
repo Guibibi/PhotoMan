@@ -1,0 +1,73 @@
+﻿@page "/collections/create"
+@inject UserManager<User> UserManager
+@using PhotoMan.Models
+@using PhotoMan.Utilities
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Identity
+@using PhotoMan.Data
+
+<PageTitle>Create Collection</PageTitle>
+<h3>Create new collection</h3>
+
+<EditForm Model="@Model" OnValidSubmit="@Submit">
+	<DataAnnotationsValidator />
+	<ValidationSummary />
+	<div class="form-group">
+		<label for="codeInput" class="form-label">Code</label>
+		<InputText id="codeInput" class="form-control" @bind-Value="Model.Code" />
+		<button class="btn btn-outline-secondary" @onclick="GenerateCode" @onclick:preventDefault>Random code </button>
+	</div>
+
+	<div class="form-group">
+		<label for="titleInput" class="form-label">Title</label>
+		<InputText id="titleInput" class="form-control" @bind-Value="Model.Title" />
+	</div>
+	<div class="form-group">
+		<label for="descriptionInput" class="form-label">Description</label>
+		<InputTextArea id="descriptionInput" class="form-control" @bind-Value="Model.Description" />
+	</div>
+
+	<div class="form-group">
+		<label for="fileInput">Upload files</label>
+		<InputFile multiple>Upload pictures</InputFile>
+	</div>
+
+	<button class="btn btn-secondary">Create collection</button>
+		
+</EditForm>
+
+@inject Data.ApplicationDbContext dbContext
+@inject NavigationManager navManager
+@code {
+	[CascadingParameter]
+	private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+	[Inject]
+	UserManager<User> userManager { get; set; }
+
+	public PhotoCollection? Model { get; set; }
+
+
+	private void GenerateCode() => Model.Code = CodeGenerator.GenerateRandomCode(8);
+
+	protected override async void OnInitialized()
+	{
+		Model ??= new();
+		var authState = (await authenticationStateTask).User;
+		var currentUser = await userManager.GetUserAsync(authState);
+		Model.User = currentUser;
+		Model.UserId = currentUser.Id;
+	}
+
+	private async void Submit()
+	{
+		if (Model == null)
+		{
+			return;
+		}
+
+		dbContext.PhotoCollections.Add(Model);
+		await dbContext.SaveChangesAsync();
+		navManager.NavigateTo("/collections/list");
+	}
+} 

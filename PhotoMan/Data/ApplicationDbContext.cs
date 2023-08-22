@@ -11,7 +11,7 @@ namespace PhotoMan.Data
         {
         }
 
-        public DbSet<Collection> Collections { get; set; }
+        public DbSet<PhotoCollection> PhotoCollections { get; set; }
         public DbSet<CollectionPurchase> CollectionPurchases { get; set; }
         public DbSet<Photo> Photos { get; set; }
 

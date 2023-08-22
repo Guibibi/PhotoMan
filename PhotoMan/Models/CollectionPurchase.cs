@@ -18,6 +18,6 @@
 
         // Navigation properties
         public required User Client { get; set; }
-        public required Collection Collection { get; set; }
+        public required PhotoCollection Collection { get; set; }
     }
 }

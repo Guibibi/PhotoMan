@@ -12,6 +12,6 @@
         // public decimal Price { get; set; }
 
         // Navigation Properties
-        public required Collection Collection { get; set; }
+        public required PhotoCollection Collection { get; set; }
     }   
 }
