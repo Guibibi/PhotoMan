@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using PhotoMan.Models;
+using PhotoMan.Data.Models;
 
 namespace PhotoMan.Areas.Identity.Pages.Account
 {

@@ -1,73 +1,91 @@
 ﻿@page "/collections/create"
 @inject UserManager<User> UserManager
-@using PhotoMan.Models
+@using PhotoMan.Data.Models
 @using PhotoMan.Utilities
-@using System.Security.Claims
 @using Microsoft.AspNetCore.Identity
-@using PhotoMan.Data
+@using System.Diagnostics
+@using System.Drawing.Printing
 
 <PageTitle>Create Collection</PageTitle>
 <h3>Create new collection</h3>
 
 <EditForm Model="@Model" OnValidSubmit="@Submit">
-	<DataAnnotationsValidator />
-	<ValidationSummary />
-	<div class="form-group">
-		<label for="codeInput" class="form-label">Code</label>
-		<InputText id="codeInput" class="form-control" @bind-Value="Model.Code" />
-		<button class="btn btn-outline-secondary" @onclick="GenerateCode" @onclick:preventDefault>Random code </button>
-	</div>
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
 
-	<div class="form-group">
-		<label for="titleInput" class="form-label">Title</label>
-		<InputText id="titleInput" class="form-control" @bind-Value="Model.Title" />
-	</div>
-	<div class="form-group">
-		<label for="descriptionInput" class="form-label">Description</label>
-		<InputTextArea id="descriptionInput" class="form-control" @bind-Value="Model.Description" />
-	</div>
+    <div class="row w-50">
 
-	<div class="form-group">
-		<label for="fileInput">Upload files</label>
-		<InputFile multiple>Upload pictures</InputFile>
-	</div>
+        <div class="form-group col">
+            <label for="titleInput" class="form-label">Title</label>
+            <InputText id="titleInput" class="form-control" @bind-Value="Model.Title"/>
+        </div>
 
-	<button class="btn btn-secondary">Create collection</button>
-		
+        <div class="form-group col">
+            <label for="codeInput" class="form-label">Code</label>
+            <div class="input-group">
+                <InputText id="codeInput" class="form-control" @bind-Value="Model.Code"/>
+                <button class="btn btn-outline-secondary input" @onclick="GenerateCode" @onclick:preventDefault>Generate code </button>
+            </div>
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="descriptionInput" class="form-label">Description</label>
+            <InputTextArea id="descriptionInput" class="form-control" @bind-Value="Model.Description"/>
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="fileInput" class="form-label">Upload files</label>
+            <InputFile multiple class="form-control" OnChange="@ShowPreview">Upload pictures</InputFile>
+        </div>
+
+        <div class="form-group mt-4">
+            <button class="btn btn-secondary w-auto ">Create collection</button>
+        </div>
+
+    </div>
+
 </EditForm>
 
 @inject Data.ApplicationDbContext dbContext
 @inject NavigationManager navManager
+
 @code {
-	[CascadingParameter]
-	private Task<AuthenticationState> authenticationStateTask { get; set; }
 
-	[Inject]
-	UserManager<User> userManager { get; set; }
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
 
-	public PhotoCollection? Model { get; set; }
+    [Inject]
+    UserManager<User> userManager { get; set; }
+
+    public PhotoCollection? Model { get; set; }
 
 
-	private void GenerateCode() => Model.Code = CodeGenerator.GenerateRandomCode(8);
+    private void GenerateCode() => Model.Code = CodeGenerator.GenerateRandomCode(8);
 
-	protected override async void OnInitialized()
-	{
-		Model ??= new();
-		var authState = (await authenticationStateTask).User;
-		var currentUser = await userManager.GetUserAsync(authState);
-		Model.User = currentUser;
-		Model.UserId = currentUser.Id;
-	}
+    protected override async void OnInitialized()
+    {
+        Model ??= new();
+        var authState = (await authenticationStateTask).User;
+        var currentUser = await userManager.GetUserAsync(authState);
+        Model.User = currentUser;
+        Model.UserId = currentUser.Id;
+        //TODO: Save pictures and make sure they are only the correct filetypes.
+    }
 
-	private async void Submit()
-	{
-		if (Model == null)
-		{
-			return;
-		}
+    private async void Submit()
+    {
+        if (Model == null)
+        {
+            return;
+        }
 
-		dbContext.PhotoCollections.Add(Model);
-		await dbContext.SaveChangesAsync();
-		navManager.NavigateTo("/collections/list");
-	}
-} 
+        dbContext.PhotoCollections.Add(Model);
+        await dbContext.SaveChangesAsync();
+        navManager.NavigateTo("/collections/");
+    }
+
+    private static void ShowPreview()
+    {
+     Console.WriteLine("Test");
+    }
+}

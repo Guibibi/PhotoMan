@@ -1,7 +1,6 @@
-﻿
-namespace PhotoMan.Models
+﻿namespace PhotoMan.Data.Models
 {
- public enum UserRole
+    public enum UserRole
     {
         Photographer,
         Client,
@@ -18,9 +17,9 @@ namespace PhotoMan.Models
         public DateTime Created { get; set; } = DateTime.UtcNow;
         public DateTime Updated { get; set; } = DateTime.UtcNow;
 
-         // Navigation properties
+        // Navigation properties
         public required List<PhotoCollection>? Collections { get; set; }
         public List<CollectionPurchase>? Purchases { get; set; }
-       
-        }   
+
+    }
 }

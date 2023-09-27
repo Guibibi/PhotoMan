@@ -1,6 +1,6 @@
-﻿namespace PhotoMan.Models
+﻿namespace PhotoMan.Data.Models
 {
- public class Photo
+    public class Photo
     {
         public int Id { get; set; }
         public int CollectionID { get; set; }
@@ -13,5 +13,5 @@
 
         // Navigation Properties
         public required PhotoCollection Collection { get; set; }
-    }   
+    }
 }

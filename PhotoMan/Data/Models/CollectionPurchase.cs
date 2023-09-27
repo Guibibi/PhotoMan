@@ -1,6 +1,6 @@
-﻿namespace PhotoMan.Models
+﻿namespace PhotoMan.Data.Models
 {
-  public enum PaymentStatus
+    public enum PaymentStatus
     {
         Pending,
         Completed,

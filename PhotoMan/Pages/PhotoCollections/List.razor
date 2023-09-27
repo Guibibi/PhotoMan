@@ -1,0 +1,13 @@
+﻿@page "/collections/"
+@inject NavigationManager NavigationManager
+
+<PageTitle>Collection Lists</PageTitle>
+<h3>Collections lists</h3>
+
+<p>
+    <a @onclick="NavigateToCreate">Create New</a>
+</p>
+@code {
+    private void NavigateToCreate() => NavigationManager.NavigateTo("/collections/create");
+
+}

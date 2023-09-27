@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PhotoMan.Models
+namespace PhotoMan.Data.Models
 {
     public class PhotoCollection
     {
@@ -19,8 +19,8 @@ namespace PhotoMan.Models
         [StringLength(300)]
         public string Description { get; set; }
 
-        public DateTime Created{ get; set; } = DateTime.UtcNow;
-        public DateTime Updated{ get; set;} = DateTime.UtcNow;
+        public DateTime Created { get; set; } = DateTime.UtcNow;
+        public DateTime Updated { get; set; } = DateTime.UtcNow;
 
 
         // Navigation properties
